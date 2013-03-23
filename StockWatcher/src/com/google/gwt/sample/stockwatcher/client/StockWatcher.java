@@ -1,6 +1,7 @@
 package com.google.gwt.sample.stockwatcher.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -8,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Timer;
@@ -155,7 +157,10 @@ public class StockWatcher implements EntryPoint {
 	 for ( int i =0 ;i<prices.length; i++){
 		 updateTable(prices[i]);
 	 }
-		
+	   // Display timestamp showing last refresh.
+	    lastUpdatedLabel.setText("Last update : "
+	        + DateTimeFormat.getMediumDateTimeFormat().format(new Date()));
+
 	}
 	/*update  a single row in the stock table 
 	@param price Stock data for a single row*/
