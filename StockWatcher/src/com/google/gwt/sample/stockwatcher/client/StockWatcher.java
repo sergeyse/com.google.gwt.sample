@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -53,6 +54,7 @@ public class StockWatcher implements EntryPoint {
 		RootPanel.get("stockList").add(mainPanel);
 		// Move cursor focus to the input box.
 		newSymbolTextBox.setFocus(true);
+		
 		// setup timer to refresh list automatically.
 		Timer refreshTimer = new Timer() {
 
@@ -145,9 +147,36 @@ public class StockWatcher implements EntryPoint {
 			updateTabel(prices);
 
 	}
+	
+	/*update the Price and Change fields all the rows in the stock table 
+	@param prices Stock data for all row */
 
 	private void updateTabel(StockPrice[] prices) {
-		// TODO Auto-generated method stub
+	 for ( int i =0 ;i<prices.length; i++){
+		 updateTable(prices[i]);
+	 }
+		
+	}
+	/*update  a single row in the stock table 
+	@param price Stock data for a single row*/
+
+	private void updateTable(StockPrice price) {
+		// make sure the stock is still in the stock table 
+		if (!stocks.contains(price.getSymbol())){
+			return;
+		}
+		int row = stocks.indexOf(price.getSymbol()) + 1;
+	//format the data in the Price and Change fields.
+		
+		String priceText = NumberFormat.getFormat("#,##0.00").format(price.getPrice());
+		NumberFormat changeFormat = NumberFormat.getFormat("+#,##0.00;-#,##0.00");
+		String changeText = changeFormat.format(price.getChange());
+		String changePercentText = changeFormat.format(price.getChangePercent());
+		//populate the price and change fields with new data.
+		stocksFlexTable.setText(row, 1, priceText);
+		stocksFlexTable.setText(row, 2, changeText+ " ("+ changePercentText+ "%)"   );
+		
+		
 		
 	}
 
